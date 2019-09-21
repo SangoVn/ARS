@@ -8,8 +8,11 @@ var mongoose = require('mongoose');
 var flash = require('connect-flash');
 var morgan = require('morgan');
 var passport = require('passport');
+var passportadmin = require('passport');
 var session = require('express-session');
-require('./config/passport')(passport); // pass passport for configuration
+const requestIp = require('request-ip');
+
+require('./config/admin-passport')(passport); // pass passport for configuration
 // create application/x-www-form-urlencoded parser
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -36,8 +39,12 @@ app.set('view engine', 'ejs');
 var _secret ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNTM0NTQzNTQzNTQzNTM0NTMiLCJleHAiOjE1MDQ2OTkyNTZ9.zG-2FvGegujxoLWwIQfNB5IT46D-xC4e8dEDYwi6aRM";
 // các cài đặt cần thiết cho passport
 app.use(session({secret: _secret})); // chuối bí mật đã mã hóa coookie
+
+
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
+
+
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.use('/css', express.static('public/css'));
@@ -53,7 +60,17 @@ app.use('/ckeditor', express.static('public/ckeditor'));
 var configDB = require('./config/database.js');
 // configuration ===============================================================
 mongoose.connect(configDB.url); // kết nối tới db
+// ADMIN CONTROLLER//
+var DashboardController = require('./controller/admin/DashboardController.js');
+app.use("/admin",DashboardController);
 
+var MemberController = require('./controller/admin/MemberController.js');
+app.use("/admin/member",MemberController);
+
+var NewsController = require('./controller/admin/NewsController.js');
+app.use("/admin/news",NewsController);
+
+// MAIN CONTROLLER//
 var AccountController = require('./controller/main/AccountController.js');
 app.use("/account",AccountController);
 

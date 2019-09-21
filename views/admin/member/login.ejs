@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <title>Lexa - Responsive Bootstrap 4 Admin Dashboard</title>
+        <meta content="Admin Dashboard" name="description" />
+        <meta content="Themesbrand" name="author" />
+        <link rel="shortcut icon" href="/public/assets/images/favicon.ico">
+
+        <link href="/public/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="/public/assets/css/metismenu.min.css" rel="stylesheet" type="text/css">
+        <link href="/public/assets/css/icons.css" rel="stylesheet" type="text/css">
+        <link href="/public/assets/css/style.css" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <div class="wrapper-page">
+
+            <div class="card">
+                <div class="card-body">
+
+                    <h3 class="text-center m-0">
+                        <a href="/" class="logo logo-admin"><img src="/public/assets/images/logo.png" height="30" alt="logo"></a>
+                    </h3>
+
+                    <div class="p-3">
+                        <h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>
+                        <p class="text-muted text-center">Sign in to continue to Fonik.</p>
+                        
+                        <div id="html_error">
+
+                            <% if (message.length > 0) { %>
+                                <div class="alert alert-danger"><%= message %></div>
+                                <% } %>
+
+                        </div>
+                        <form action="/admin/member/login" method="post">
+                        <div class="form-horizontal m-t-30" >
+                            
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="userpassword">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Enter password">
+                            </div>
+
+                            <div class="form-group row m-t-20">
+                                <div class="col-6">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                        <label class="custom-control-label" for="customControlInline">Remember me</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <button onclick="loginUser()" class="btn btn-primary w-md waves-effect waves-light" type="submit">Log In</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group m-t-10 mb-0 row">
+                                <div class="col-12 m-t-20">
+                                    <a href="pages-recoverpw" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="m-t-40 text-center">
+                <p>Don't have an account ?  </p>
+                <p>© 2018 Lexa. Crafted with </p>
+            </div>
+
+        </div>
+
+          <!-- jQuery  -->
+  <script src="/public/assets/js/jquery.min.js"></script>
+  <script src="/public/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/js/metisMenu.min.js"></script>
+  <script src="/public/assets/js/jquery.slimscroll.js"></script>
+  <script src="/public/assets/js/waves.min.js"></script>
+  <script src="/public/assets/js/jquery.sparkline.min.js"></script>
+  <!-- App js -->
+  <script src="/public/assets/js/app.js"></script>
+  <script src="/public/assets/js/ganeral.js"></script>
+  <script src="/public/assets/js/libary.js"></script>
+
+</body>
+</html>
