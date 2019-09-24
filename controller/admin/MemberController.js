@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 // Hiển thị form login
 router.get('/login',function (req, res) {
     // Hiển thị trang và truyển lại những tin nhắn từ phía server nếu có
-    res.render('admin/member/login.ejs', {message: req.flash('loginMessage')});
+    res.render('admin/member/login.ejs', {message: req.flash('admin-loginMessage')});
 });
 // Xử lý thông tin khi có người thực hiện đăng nhập
 // app.post('/login', chúng ta sẽ xử lý với passport ở đây);
@@ -28,7 +28,7 @@ router.post('/login', passport.authenticate('admin-local-login', {
 // =====================================
 // Hiển thị trang đăng ký
 router.get('/signup', function (req, res) {
-    res.render('admin/member/signup.ejs', {message: req.flash('signupMessage')});
+    res.render('admin/member/signup.ejs', {message: req.flash('admin-signupMessage')});
 });
 // Xử lý thông tin khi có người đăng ký
 // app.post('/signup', chúng ta sẽ xử lý với passport ở đây);

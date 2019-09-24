@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var News = require('../../models/news');
+var Ticket = require('../../models/ticket');
 
 const requestIp = require('request-ip');
  
@@ -20,9 +20,9 @@ router.get('/', isLoggedIn,function (req, res) {
         image : req.protocol + '://' + req.get('host') + "/asset/images/gaa790205662a4457a90c595eada13.jpg",
         hostname: req.protocol + '://' + req.get('host')
     };     
-    News.find({})
+    Ticket.find({})
     .then(listNews => {
-        res.render('admin/news/index', { News: listNews,  header :data_header })
+        res.statusCode(301).render('admin/ticket/index', { Ticket: listNews,  header :data_header })
     })
     .catch(err => {
         console.log('Error: ', err);
@@ -31,7 +31,7 @@ router.get('/', isLoggedIn,function (req, res) {
 });
 
 
-router.get('/add-news', (req, res) => {
+router.get('/add-ticket', (req, res) => {
     var data_header = 
     { 
         title: 'Dashboard', 
@@ -41,7 +41,7 @@ router.get('/add-news', (req, res) => {
         image : req.protocol + '://' + req.get('host') + "/asset/images/gaa790205662a4457a90c595eada13.jpg",
         hostname: req.protocol + '://' + req.get('host')
     };     
-    res.render('admin/news/add-news.ejs',{
+    res.render('admin/ticket/add-ticket.ejs',{
         header :data_header
     });
 });
@@ -49,30 +49,27 @@ router.get('/add-news', (req, res) => {
 /**
  * Add new Product
  */
-router.post('/add-news', (req, res) => {
-    let newNews = new News();   
-    newNews.Title= req.body.newsTitle;
-    newNews.Bec = req.body.newsBec;
-    newNews.H1Content = req.body.newsH1Content;
-    newNews.PostName = req.body.newsPostName;
-    newNews.Google.Title = req.body.GoogleTitle;
-    newNews.Google.ShortContent = req.body.GoogleShortContent;
-    newNews.Google.Keyword = req.body.GoogleKeyword;
-    newNews.ShortContent = req.body.newsShortContent;
-    newNews.FullContent = req.body.newsFullContent;
-    newNews.ImageURL = req.body.newsImageURL;
-    newNews.Active = req.body.newsActive;
-    newNews.Orderby = req.body.newsOrderby;
-    newNews.IsHot = req.body.newsIsHot;
-    newNews.Tags.Tag = req.body.newsTag;
-    newNews.CreatedDate = new Date();
-    newNews.UserPost = req.username;
-    newNews.ModifeDate = new Date();
-    newNews.IPRequest =  requestIp.getClientIp(req);
+router.post('/add-ticket', (req, res) => {
+    let newTicket = new Ticket();   
+    
+    newTicket.IPRequest =  requestIp.getClientIp(req);
+    newTicket.Title = req.body.Title;
+    newTicket.FullName = req.body.FullName;
+    newTicket.Phone = req.body.Phone;
+    newTicket.MemberRequest = req.body.MemberRequest;
+    newTicket.DatetimeProcess = req.body.DatetimeProcess;
+    newTicket.StatusPriority = req.body.StatusPriority;
+    newTicket.StatusProcess = req.body.StatusProcess;
+    newTicket.ModifeDate = new Date();
+    newTicket.ModifeMember = req.username;
+    newTicket.TicketContent.Message = req.body.Message;
+    newTicket.TicketContent.MemberCreated = req.username;
+    newTicket.TicketContent.CreateDate =new Date();
+    newTicket.TicketContent.IP =  requestIp.getClientIp(req);     
 
-    newProduct.save()
+    newTicket.save()
         .then(doc => {
-            res.redirect('/admin/news/')
+            res.statusCode(301).redirect('/admin/ticket/')
         })
         .catch(err => {
             console.log('Error: ', err);
@@ -85,22 +82,22 @@ router.post('/add-news', (req, res) => {
 /**
  * Go to Update Product page
  */
-router.get('/update-news/:newsId', (req, res) => {
-    News.findById(req.params.newsId, (err, news) => {
+router.get('/update-ticket/:ticketID', (req, res) => {
+    Ticket.findById(req.params.ticketID, (err, ticket) => {
         if (err) {
             console.log(err);
             throw err
         }
-        res.render('admin/news/update-news', { news: news });
+        res.render('admin/ticket/update-ticket', { ticket: ticket });
     })
 });
 
 /**
  * Delete product
  */
-router.delete('/:newsId', (req, res) => {
-    let newsId = req.params.newsId;
-    News.findByIdAndDelete(newsId, (err, doc) => {
+router.delete('/:TicketId', (req, res) => {
+    let ticketId = req.params.TicketId;
+    Ticket.findByIdAndDelete(ticketId, (err, doc) => {
         if (err) throw err;
         res.send(doc)
     })
@@ -109,37 +106,31 @@ router.delete('/:newsId', (req, res) => {
 /**
  * Update product
  */
-router.post('/:newsId', (req, res) => {
-    let newsId = req.params.newsId;
+router.post('/:TicketId', (req, res) => {
+    let TicketId = req.params.TicketId;
     News.findByIdAndUpdate(
-        { _id: newsId },
+        { _id: TicketId },
         { $set: { 
-            Title :req.body.newsTitle,
-            Bec : req.body.newsBec,
-            H1Content  : req.body.newsH1Content,
-            PostName  : req.body.newsPostName,
-            Google :{
-                Title  : req.body.GoogleTitle,
-                ShortContent  : req.body.GoogleShortContent,
-                Keyword  : req.body.GoogleKeyword,
-            },            
-            ShortContent  : req.body.newsShortContent,
-            FullContent  : req.body.newsFullContent,
-            ImageURL  : req.body.newsImageURL,
-            Active  : req.body.newsActive,
-            Orderby  : req.body.newsOrderby,
-            IsHot  : req.body.newsIsHot,
-            Tags :{
-                Tag  : req.body.newsTag,
-            },                   
-            UserPost  : req.username,
-            ModifeDate  : new Date(),
-            IPRequest  :  requestIp.getClientIp(req),
+            Title :req.body.Title,
+            FullName :req.body.FullName,
+            Phone :req.body.Phone,
+            MemberRequest :req.body.MemberRequest,
+            DatetimeProcess :req.body.DatetimeProcess,
+            StatusPriority :req.body.StatusPriority,
+            StatusProcess :req.body.StatusProcess,
+            ModifeDate :new Date(),
+            ModifeMember :req.username,
+            TicketContent :{
+                Message :req.body.Message,
+                MemberCreated :req.username,
+                CreateDate : new Date(),
+                IP :requestIp.getClientIp(req),
+            } 
         
         } },
         { useFindAndModify: false })
         .then(doc => {
-            res.redirect('/admin/news/')
+            res.redirect('/admin/ticket/')
         })
 });
 
